@@ -9,7 +9,7 @@ function EventDetails() {
 
   useEffect(() => {
     fetchEvent()
-  }, [id])
+  }, [id])  
 
   const fetchEvent = async () => {
     try {
