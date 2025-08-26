@@ -9,12 +9,11 @@ function EventList() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Fetch events from backend
+
   useEffect(() => {
     fetchEvents()
   }, [])
 
-  // Filter events when search or filter changes
   useEffect(() => {
     filterEvents()
   }, [events, searchTerm, typeFilter])
@@ -55,44 +54,74 @@ function EventList() {
     setFilteredEvents(filtered)
   }
 
-  if (loading) return <div className="text-center py-8">Loading events...</div>
-  if (error) return <div className="text-center py-8 text-red-600">Error: {error}</div>
+  if (loading) {
+    return (
+      <div className="container mt-5">
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="container mt-5">
+        <div className="alert alert-danger text-center">
+          Error: {error}
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Upcoming Events</h1>
-      
-      {/* Search and Filter Section */}
-      <div className="mb-8 flex flex-col md:flex-row gap-4 justify-center">
-        <input
-          type="text"
-          placeholder="Search events by title or tags..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        
-        <select
-          value={typeFilter}
-          onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="both">All Events</option>
-          <option value="online">Online Only</option>
-          <option value="offline">In-Person Only</option>
-        </select>
+    <div className="container mt-4">
+      {/* Header with Title and Filter */}
+      <div className="row align-items-center mb-4">
+        <div className="col-md-6">
+          <h2 className="fw-bold mb-0">Meetup Events</h2>
+        </div>
+        <div className="col-md-6">
+          <div className="d-flex justify-content-end">
+            <select
+              className="form-select"
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              style={{ width: '200px' }}
+            >
+              <option value="both">Select Event Type</option>
+              <option value="online">Online Events</option>
+              <option value="offline">Offline Events</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="row mb-4">
+        <div className="col-md-6">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search events by title or tags..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
       </div>
 
       {/* Events Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="row">
         {filteredEvents.map(event => (
           <EventCard key={event._id} event={event} />
         ))}
       </div>
 
       {filteredEvents.length === 0 && (
-        <div className="text-center py-8 text-gray-600">
-          No events found matching your criteria.
+        <div className="text-center py-5">
+          <p className="text-muted">No events found matching your criteria.</p>
         </div>
       )}
     </div>

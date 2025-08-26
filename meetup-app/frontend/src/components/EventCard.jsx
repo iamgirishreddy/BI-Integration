@@ -2,38 +2,59 @@ import { Link } from 'react-router-dom'
 
 function EventCard({ event }) {
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric'
-    })
+    }) + ' • ' + date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }) + ' IST'
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      <img 
-        src={event.thumbnail} 
-        alt={event.title}
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-4">
-        <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-        <p className="text-gray-600 mb-2">{formatDate(event.date)}</p>
-        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
-          event.type === 'online' 
-            ? 'bg-green-100 text-green-800' 
-            : 'bg-blue-100 text-blue-800'
-        }`}>
-          {event.type === 'online' ? '🌐 Online' : '📍 In-Person'}
-        </span>
-        <p className="text-gray-700 mt-2 line-clamp-2">{event.description}</p>
-        <div className="mt-4">
-          <Link 
-            to={`/event/${event._id}`}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-          >
-            View Details
-          </Link>
+    <div className="col-md-4 mb-4">
+      <div className="card h-100 border-0 shadow-sm">
+        <div className="position-relative">
+          {/* Event Type Badge */}
+          <span className={`position-absolute badge ${
+            event.type === 'online' ? 'bg-primary' : 'bg-secondary'
+          }`} style={{ 
+            top: '10px', 
+            left: '10px', 
+            zIndex: 10,
+            fontSize: '12px'
+          }}>
+            {event.type === 'online' ? 'Online Event' : 'Offline Event'}
+          </span>
+          
+          {/* Event Image */}
+          <img 
+            src={event.thumbnail} 
+            className="card-img-top" 
+            alt={event.title}
+            style={{ height: '200px', objectFit: 'cover' }}
+          />
+        </div>
+        
+        <div className="card-body p-3">
+          {/* Date */}
+          <p className="text-muted small mb-2">
+            {formatDate(event.date)}
+          </p>
+          
+          {/* Title */}
+          <h6 className="card-title fw-bold mb-3">
+            <Link 
+              to={`/event/${event._id}`} 
+              className="text-decoration-none text-dark"
+            >
+              {event.title}
+            </Link>
+          </h6>
         </div>
       </div>
     </div>
