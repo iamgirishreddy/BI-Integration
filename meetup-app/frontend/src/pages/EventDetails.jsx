@@ -13,7 +13,7 @@ function EventDetails() {
 
   const fetchEvent = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/events/${id}`)
+      const response = await fetch(`https://bi-integration.onrender.com/api/events/${id}`)
       if (!response.ok) {
         throw new Error('Event not found')
       }
@@ -78,10 +78,10 @@ function EventDetails() {
         {/* Left Column - Main Content */}
         <div className="col-lg-8">
           {/* Event Title */}
-          <h1 className="fw-bold mb-2">{event.title}</h1>
+          <h1 className="fw-bold mb-2 text-start">{event.title}</h1>
           
           {/* Hosted By */}
-          <p className="text-muted mb-4">
+          <p className="text-muted mb-4 text-start">
             Hosted By: <strong>Marketing Experts</strong>
           </p>
           
@@ -94,14 +94,14 @@ function EventDetails() {
           />
           
           {/* Details Section */}
-          <h5 className="fw-bold mb-3">Details:</h5>
-          <p className="mb-4" style={{ lineHeight: '1.6' }}>
+          <h5 className="fw-bold mb-3 text-start">Details:</h5>
+          <p className="mb-4 text-start" style={{ lineHeight: '1.6' }}>
             {event.description}
           </p>
           
           {/* Additional Information */}
-          <h5 className="fw-bold mb-3">Additional Information:</h5>
-          <div className="mb-4">
+          <h5 className="fw-bold mb-3 text-start">Additional Information:</h5>
+          <div className="mb-4 text-start">
             <p className="mb-2">
               <strong>Dress Code:</strong> Smart casual
             </p>
@@ -111,8 +111,8 @@ function EventDetails() {
           </div>
           
           {/* Event Tags */}
-          <h5 className="fw-bold mb-3">Event Tags:</h5>
-          <div className="mb-4">
+          <h5 className="fw-bold mb-3 text-start">Event Tags:</h5>
+          <div className="mb-4 text-start">
             {event.tags.map((tag, index) => (
               <span 
                 key={index} 
@@ -128,7 +128,7 @@ function EventDetails() {
         {/* Right Column - Event Info */}
         <div className="col-lg-4">
           {/* Date, Location, Price Box */}
-          <div className="border rounded p-3 mb-4">
+          <div className="border rounded p-3 mb-4 text-start">
             {/* Date and Time */}
             <div className="d-flex align-items-start mb-3">
               <i className="bi bi-clock me-2 mt-1"></i>
@@ -167,7 +167,7 @@ function EventDetails() {
                   <div className="text-center">
                     <img 
   src={index === 0 ? 
-    "https://images.unsplash.com/photo-1494790108755-2616b612b1bc?w=80&h=80&fit=crop&crop=face" : 
+    "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=80&h=80&fit=crop&crop=face" : 
     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
   }
   alt={speaker}
