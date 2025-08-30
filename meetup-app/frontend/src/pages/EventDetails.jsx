@@ -13,8 +13,8 @@ function EventDetails() {
 
   const fetchEvent = async () => {
     try {
-      // const response = await fetch(`https://bi-integration.onrender.com/api/events/${id}`)
-      const response = await fetch(`http://localhost:10000/api/events/${id}`)
+      const response = await fetch(`https://bi-integration.onrender.com/api/events/${id}`)
+      // const response = await fetch(`http://localhost:10000/api/events/${id}`)
       if (!response.ok) {
         throw new Error('Event not found')
       }
