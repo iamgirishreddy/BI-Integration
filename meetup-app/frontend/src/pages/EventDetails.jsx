@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:10000'
 
 function EventDetails() {
   const { id } = useParams()
@@ -13,7 +14,7 @@ function EventDetails() {
 
   const fetchEvent = async () => {
     try {
-      const response = await fetch(`https://bi-integration.onrender.com/api/events/${id}`)
+      const response = await fetch(`${API_BASE}/api/events/${id}`)
       // const response = await fetch(`http://localhost:10000/api/events/${id}`)
       if (!response.ok) {
         throw new Error('Event not found')
