@@ -22,7 +22,7 @@ function EventList() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('${API_BASE}/api/events')
+      const response = await fetch(`${API_BASE}/api/events`)
       // const response = await fetch('http://localhost:10000/api/events')
       if (!response.ok) {
         throw new Error('Failed to fetch events')
@@ -75,7 +75,7 @@ function EventList() {
       <div className="container mt-5">
         <div className="alert alert-danger text-center">
           <h5>Oops! Something went wrong</h5>
-          <p className="mb-0">Error: {error}</p>
+          <p className="mb-0">Error: {error}  </p>
         </div>
       </div>
     )
