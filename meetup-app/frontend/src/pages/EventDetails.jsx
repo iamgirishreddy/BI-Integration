@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:10000'
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:10000'
 
 function EventDetails() {
   const { id } = useParams()
