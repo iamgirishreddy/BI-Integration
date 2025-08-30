@@ -13,7 +13,8 @@ function EventDetails() {
 
   const fetchEvent = async () => {
     try {
-      const response = await fetch(`https://bi-integration.onrender.com/api/events/${id}`)
+      // const response = await fetch(`https://bi-integration.onrender.com/api/events/${id}`)
+      const response = await fetch(`http://localhost:10000/api/events/${id}`)
       if (!response.ok) {
         throw new Error('Event not found')
       }
@@ -170,16 +171,16 @@ function EventDetails() {
               <div className="mb-3">
                 <div className="d-flex align-items-start mb-2">
                   <i className="bi bi-calendar-event me-3 mt-1 text-primary"></i>
-                  <div>
-                    <div className="fw-semibold">{startTime}</div>
-                    <div className="text-muted">to</div>
-                    <div className="fw-semibold">{endTime}</div>
+                  <div className="text-start">
+                    <div className="fw-semibold">{startTime} to {endTime}</div>
+                    {/* <div className="text-muted">to</div> */}
+                    {/* <div className="fw-semibold">{endTime}</div> */}
                   </div>
                 </div>
               </div>
               
               {/* Venue - Always show */}
-              <div className="mb-3">
+              <div className="mb-3 text-start">
                 <div className="d-flex align-items-start">
                   <i className="bi bi-geo-alt me-3 mt-1 text-success"></i>
                   <div>
@@ -194,7 +195,7 @@ function EventDetails() {
               </div>
               
               {/* Price */}
-              <div className="mb-0">
+              <div className="mb-0 text-start">
                 <div className="d-flex align-items-center">
                   <i className="bi bi-currency-rupee me-3 text-warning"></i>
                   <div>
@@ -218,8 +219,8 @@ function EventDetails() {
                     <div className="text-center">
                       <img 
                         src={index === 0 ? 
-                          "https://images.unsplash.com/photo-1494790108755-2616b612b1bc?w=80&h=80&fit=crop&crop=face" : 
-                          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face"
+                          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" : 
+                          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=80&h=80&fit=crop&crop=face"
                         }
                         alt={speaker}
                         className="rounded-circle mb-2"

@@ -55,7 +55,7 @@ const sampleEvents = [
     title: "Full Stack Development Bootcamp",
     date: new Date("2025-10-02T10:00:00Z"),
     type: "online",
-    thumbnail: "https://images.unsplash.com/photo-1515378791036-0648a814c963?w=400&h=250&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1731160807880-daf859b64420?q=80&w=1460&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=400&h=250&fit=crop",
     description: "Comprehensive bootcamp covering frontend (React) and backend (Node.js/Express) development. Build real-world projects.",
     sessionTimings: "10:00 AM - 4:00 PM EST",
     speakers: ["Alex Rodriguez", "Emily Davis"],

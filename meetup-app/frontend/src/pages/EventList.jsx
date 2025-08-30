@@ -21,7 +21,8 @@ function EventList() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('https://bi-integration.onrender.com/api/events')
+      // const response = await fetch('https://bi-integration.onrender.com/api/events')
+      const response = await fetch('http://localhost:10000/api/events')
       if (!response.ok) {
         throw new Error('Failed to fetch events')
       }
