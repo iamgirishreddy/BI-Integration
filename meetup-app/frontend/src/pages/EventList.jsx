@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import EventCard from '../components/EventCard'
+
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:10000'
 
 function EventList() {
@@ -23,7 +24,6 @@ function EventList() {
   const fetchEvents = async () => {
     try {
       const response = await fetch(`${API_BASE}/api/events`)
-      // const response = await fetch('http://localhost:10000/api/events')
       if (!response.ok) {
         throw new Error('Failed to fetch events')
       }
@@ -37,7 +37,7 @@ function EventList() {
   }
 
   const filterEvents = () => {
-    let filtered = events
+    let filtered = [...events] // Create a copy to avoid mutation
 
     // Filter by type
     if (typeFilter !== 'both') {
@@ -45,12 +45,12 @@ function EventList() {
     }
 
     // Filter by search term (title and tags)
-    if (searchTerm) {
+    if (searchTerm.trim()) {
       filtered = filtered.filter(event =>
         event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        event.tags.some(tag => 
+        (event.tags && event.tags.some(tag => 
           tag.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        ))
       )
     }
 
@@ -75,27 +75,33 @@ function EventList() {
       <div className="container mt-5">
         <div className="alert alert-danger text-center">
           <h5>Oops! Something went wrong</h5>
-          <p className="mb-0">Error: {error}  </p>
+          <p className="mb-0">Error: {error}</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="container mt-4 px-3 px-md-4">
-      {/* Header Section */}
-      <div className="row align-items-center mb-4">
-        <div className="col-12 col-md-6 mb-3 mb-md-0">
-          <h2 className="fw-bold mb-1" style={{ fontSize: '2rem' }}>Meetup Events</h2>
-          <p className="text-muted mb-0">Discover amazing events happening around you</p>
+    <div className="container-fluid mt-4 px-3 px-md-4">
+      {/* Header Section - Left Aligned */}
+      <div className="row mb-4">
+        <div className="col-12 col-lg-8 mb-3 mb-lg-0">
+          <div className="text-start">
+            <h2 className="fw-bold mb-2" style={{ fontSize: '2.5rem', color: '#333' }}>
+              Meetup Events
+            </h2>
+            <p className="text-muted mb-0" style={{ fontSize: '1.1rem' }}>
+              Discover amazing events happening around you
+            </p>
+          </div>
         </div>
-        <div className="col-12 col-md-6">
-          <div className="d-flex justify-content-md-end">
+        <div className="col-12 col-lg-4">
+          <div className="d-flex justify-content-start justify-content-lg-end">
             <select
               className="form-select"
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              style={{ maxWidth: '220px' }}
+              style={{ maxWidth: '250px' }}
             >
               <option value="both">Both (All Events)</option>
               <option value="online">Online Events</option>
@@ -105,51 +111,88 @@ function EventList() {
         </div>
       </div>
 
-      {/* Search Bar */}
+      {/* Search Bar - Left Aligned */}
       <div className="row mb-4">
         <div className="col-12 col-md-8 col-lg-6">
-          <div className="input-group">
+          <div className="input-group shadow-sm">
             <span className="input-group-text bg-white border-end-0">
               <i className="bi bi-search text-muted"></i>
             </span>
             <input
               type="text"
-              className="form-control border-start-0 ps-0"
+              className="form-control border-start-0 ps-2"
               placeholder="Search events by title or tags..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ boxShadow: 'none' }}
             />
+            {searchTerm && (
+              <button 
+                className="btn btn-outline-secondary border-start-0"
+                type="button"
+                onClick={() => setSearchTerm('')}
+                style={{ borderLeft: 'none' }}
+              >
+                <i className="bi bi-x"></i>
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Events Count */}
-      <div className="row mb-3">
+      {/* Events Count - Left Aligned */}
+      <div className="row mb-4">
         <div className="col-12">
-          <p className="text-muted small mb-0">
-            {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
-            {typeFilter !== 'both' && ` (${typeFilter})`}
-          </p>
+          <div className="text-start">
+            <p className="text-muted mb-0" style={{ fontSize: '0.95rem' }}>
+              <strong>{filteredEvents.length}</strong> event{filteredEvents.length !== 1 ? 's' : ''} found
+              {typeFilter !== 'both' && (
+                <span className="ms-2 badge bg-light text-dark">
+                  {typeFilter} events
+                </span>
+              )}
+              {searchTerm && (
+                <span className="ms-2 badge bg-light text-dark">
+                  matching "{searchTerm}"
+                </span>
+              )}
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Events Grid - Mobile Responsive */}
-      <div className="row g-3 g-md-4">
+      {/* Events Grid - Uniform and Responsive */}
+      <div className="row g-4">
         {filteredEvents.map(event => (
           <EventCard key={event._id} event={event} />
         ))}
       </div>
 
       {/* No Events Message */}
-      {filteredEvents.length === 0 && (
-        <div className="text-center py-5">
-          <div className="mb-3">
-            <i className="bi bi-calendar-x" style={{ fontSize: '3rem', color: '#6c757d' }}></i>
+      {filteredEvents.length === 0 && !loading && (
+        <div className="row">
+          <div className="col-12">
+            <div className="text-center py-5">
+              <div className="mb-3">
+                <i className="bi bi-calendar-x" style={{ fontSize: '3rem', color: '#6c757d' }}></i>
+              </div>
+              <h5 className="text-muted">No events found</h5>
+              <p className="text-muted mb-3">
+                {searchTerm ? 
+                  `No events match your search "${searchTerm}"` : 
+                  'Try adjusting your filter criteria'
+                }
+              </p>
+              {searchTerm && (
+                <button 
+                  className="btn btn-outline-primary"
+                  onClick={() => setSearchTerm('')}
+                >
+                  Clear Search
+                </button>
+              )}
+            </div>
           </div>
-          <h5 className="text-muted">No events found</h5>
-          <p className="text-muted mb-0">
-            Try adjusting your search or filter criteria
-          </p>
         </div>
       )}
     </div>

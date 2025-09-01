@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:10000'
 
 function EventDetails() {
@@ -15,7 +16,6 @@ function EventDetails() {
   const fetchEvent = async () => {
     try {
       const response = await fetch(`${API_BASE}/api/events/${id}`)
-      // const response = await fetch(`http://localhost:10000/api/events/${id}`)
       if (!response.ok) {
         throw new Error('Event not found')
       }
@@ -37,7 +37,8 @@ function EventDetails() {
       day: 'numeric'
     }) + ' at ' + date.toLocaleTimeString('en-US', {
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      hour12: true
     })
     
     // For end time, add 2 hours (example)
@@ -49,7 +50,8 @@ function EventDetails() {
       day: 'numeric'
     }) + ' at ' + endDate.toLocaleTimeString('en-US', {
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      hour12: true
     })
     
     return { startTime, endTime }
@@ -95,66 +97,92 @@ function EventDetails() {
   const { startTime, endTime } = formatDateTime(event.date)
 
   return (
-    <div className="container mt-4 px-3 px-md-4">
-      {/* Back Button */}
-      <div className="mb-4">
-        <Link to="/" className="btn btn-outline-secondary btn-sm">
-          <i className="bi bi-arrow-left me-2"></i>
-          Back to Events
-        </Link>
+    <div className="container-fluid mt-4 px-3 px-md-4">
+      {/* Back Button - Left Aligned */}
+      <div className="row mb-4">
+        <div className="col-12">
+          <Link to="/" className="btn btn-outline-secondary btn-sm">
+            <i className="bi bi-arrow-left me-2"></i>
+            Back to Events
+          </Link>
+        </div>
       </div>
 
       <div className="row">
         {/* Left Column - Main Content */}
         <div className="col-lg-8 mb-4">
-          {/* Event Title */}
-          <h1 className="fw-bold mb-2 text-start">{event.title}</h1>
-          
-          {/* Hosted By */}
-          <p className="text-muted mb-4 text-start">
-            Hosted By: <strong>Marketing Experts</strong>
-          </p>
+          {/* Event Title - Left Aligned */}
+          <div className="text-start mb-4">
+            <h1 className="fw-bold mb-3" style={{ fontSize: '2.5rem', color: '#333' }}>
+              {event.title}
+            </h1>
+            
+            {/* Hosted By - Left Aligned */}
+            <p className="text-muted mb-0" style={{ fontSize: '1.1rem' }}>
+              Hosted By: <strong className="text-dark">Marketing Experts</strong>
+            </p>
+          </div>
           
           {/* Event Image */}
           <img 
             src={event.thumbnail} 
             alt={event.title}
             className="img-fluid rounded mb-4 w-100"
-            style={{ height: '350px', objectFit: 'cover' }}
+            style={{ 
+              height: '400px', 
+              objectFit: 'cover',
+              borderRadius: '12px'
+            }}
           />
           
-          {/* Details Section */}
-          <h5 className="fw-bold mb-3 text-start">Details:</h5>
-          <p className="mb-4 text-start" style={{ lineHeight: '1.7', fontSize: '15px' }}>
-            {event.description}
-          </p>
+          {/* Details Section - Left Aligned */}
+          <div className="text-start mb-4">
+            <h5 className="fw-bold mb-3" style={{ fontSize: '1.4rem', color: '#333' }}>
+              Details:
+            </h5>
+            <p className="mb-0" style={{ 
+              lineHeight: '1.8', 
+              fontSize: '16px',
+              color: '#555'
+            }}>
+              {event.description}
+            </p>
+          </div>
           
-          {/* Additional Information */}
-          <h5 className="fw-bold mb-3 text-start">Additional Information:</h5>
-          <div className="mb-4 text-start">
+          {/* Additional Information - Left Aligned */}
+          <div className="text-start mb-4">
+            <h5 className="fw-bold mb-3" style={{ fontSize: '1.4rem', color: '#333' }}>
+              Additional Information:
+            </h5>
             <div className="row">
-              <div className="col-md-6 mb-2">
-                <p className="mb-2">
-                  <strong>Dress Code:</strong> Smart casual
+              <div className="col-md-6 mb-3">
+                <p className="mb-2" style={{ fontSize: '15px' }}>
+                  <strong>Dress Code:</strong> <span className="text-muted">Smart casual</span>
                 </p>
               </div>
-              <div className="col-md-6 mb-2">
-                <p className="mb-2">
-                  <strong>Age Restrictions:</strong> 18 and above
+              <div className="col-md-6 mb-3">
+                <p className="mb-2" style={{ fontSize: '15px' }}>
+                  <strong>Age Restrictions:</strong> <span className="text-muted">18 and above</span>
                 </p>
               </div>
             </div>
           </div>
           
-          {/* Event Tags - Mobile Responsive Spacing */}
-          <h5 className="fw-bold mb-3 text-start">Event Tags:</h5>
-          <div className="mb-4 text-start">
+          {/* Event Tags - Left Aligned with Mobile Spacing */}
+          <div className="text-start">
+            <h5 className="fw-bold mb-3" style={{ fontSize: '1.4rem', color: '#333' }}>
+              Event Tags:
+            </h5>
             <div className="d-flex flex-wrap gap-2">
-              {event.tags.map((tag, index) => (
+              {event.tags && event.tags.map((tag, index) => (
                 <span 
                   key={index} 
-                  className="badge bg-danger px-3 py-2 mb-2 mb-md-0"
-                  style={{ fontSize: '14px', fontWeight: '500' }}
+                  className="badge bg-danger px-3 py-2 mb-2"
+                  style={{ 
+                    fontSize: '14px', 
+                    fontWeight: '500',
+                    borderRadius: '20px'
+                  }}
                 >
                   {tag}
                 </span>
@@ -165,57 +193,66 @@ function EventDetails() {
         
         {/* Right Column - Event Info */}
         <div className="col-lg-4">
-          {/* Date, Location, Price Box */}
-          <div className="card border-0 shadow-sm mb-4">
-            <div className="card-body p-4">
-              {/* Date and Time */}
-              <div className="mb-3">
-                <div className="d-flex align-items-start mb-2">
-                  <i className="bi bi-calendar-event me-3 mt-1 text-primary"></i>
-                  <div className="text-start">
-                    <div className="fw-semibold">{startTime} to {endTime}</div>
-                    {/* <div className="text-muted">to</div> */}
-                    {/* <div className="fw-semibold">{endTime}</div> */}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Venue - Always show */}
-              <div className="mb-3 text-start">
-                <div className="d-flex align-items-start">
-                  <i className="bi bi-geo-alt me-3 mt-1 text-success"></i>
-                  <div>
-                    <div className="fw-semibold">
-                      {event.venue || (event.type === 'online' ? 'Online Event' : 'Venue TBD')}
-                    </div>
-                    {event.venue && event.type === 'offline' && (
-                      <div className="text-muted small">In-person event</div>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Price */}
-              <div className="mb-0 text-start">
-                <div className="d-flex align-items-center">
-                  <i className="bi bi-currency-rupee me-3 text-warning"></i>
-                  <div>
-                    <div className="fw-semibold">
-                      {event.price === 0 ? 'Free' : `₹${event.price.toLocaleString()}`}
-                    </div>
-                    <div className="text-muted small">Registration fee</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Date, Location, Price Box - Left Aligned Content */}
+          <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '12px' }}>
+  <div className="card-body ps-0 pe-4 pt-4 pb-4">
+    
+    {/* Date and Time */}
+    <div className="mb-4">
+      <div className="d-flex align-items-start">
+        <i className="bi bi-calendar-event me-3 mt-1 text-primary" style={{ fontSize: '18px' }}></i>
+        {/* <div> */}
+          <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
+          📅 : {startTime} to {endTime}
           </div>
+          {/* <div className="text-muted small">to</div>
+          <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
+            {endTime}
+          </div> */}
+        {/* </div> */}
+      </div>
+    </div>
+
+    {/* Venue */}
+    <div className="mb-4">
+      <div className="d-flex align-items-start">
+        <i className="bi bi-geo-alt me-3 mt-1 text-success" style={{ fontSize: '18px' }}></i>
+        <div>
+          <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
+            📍: {event.venue || (event.type === 'online' ? 'Online Event' : 'Venue TBD')}
+          </div>
+          {/* {event.venue && event.type === 'offline' && (
+            <div className="text-muted small">In-person event</div>
+          )} */}
+        </div>
+      </div>
+    </div>
+
+    {/* Price */}
+    <div>
+      <div className="d-flex align-items-start">
+        <i className="bi bi-currency-rupee me-3 mt-1 text-warning" style={{ fontSize: '18px' }}></i>
+        <div>
+          <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
+            💰: {event.price === 0 ? 'Free' : `₹${event.price.toLocaleString()}`}
+          </div>
+          {/* <div className="text-muted small">Registration fee</div> */}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
           
           {/* Speakers Section */}
-          <div className="card border-0 shadow-sm mb-4">
+          <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '12px' }}>
             <div className="card-body p-4">
-              <h5 className="fw-bold mb-3">Speakers ({event.speakers.length})</h5>
+              <h5 className="fw-bold mb-4 text-start" style={{ fontSize: '1.3rem', color: '#333' }}>
+                Speakers ({event.speakers ? event.speakers.length : 0})
+              </h5>
               <div className="row g-3">
-                {event.speakers.map((speaker, index) => (
+                {event.speakers && event.speakers.map((speaker, index) => (
                   <div key={index} className="col-6">
                     <div className="text-center">
                       <img 
@@ -225,11 +262,13 @@ function EventDetails() {
                         }
                         alt={speaker}
                         className="rounded-circle mb-2"
-                        width="60"
-                        height="60"
+                        width="70"
+                        height="70"
                         style={{ objectFit: 'cover' }}
                       />
-                      <div className="fw-semibold small">{speaker}</div>
+                      <div className="fw-semibold small mb-1" style={{ fontSize: '14px' }}>
+                        {speaker}
+                      </div>
                       <div className="text-muted" style={{ fontSize: '12px' }}>
                         {index === 0 ? 'Marketing Manager' : 'SEO Specialist'}
                       </div>
@@ -241,7 +280,11 @@ function EventDetails() {
           </div>
           
           {/* RSVP Button */}
-          <button className="btn btn-danger w-100 py-3 fw-bold" style={{ fontSize: '16px' }}>
+          <button className="btn btn-danger w-100 py-3 fw-bold" style={{ 
+            fontSize: '16px',
+            borderRadius: '8px',
+            transition: 'all 0.3s ease'
+          }}>
             RSVP
           </button>
         </div>
