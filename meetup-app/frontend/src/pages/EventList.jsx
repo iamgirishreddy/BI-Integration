@@ -152,9 +152,14 @@ function EventList() {
                 </span>
               )}
               {searchTerm && (
-                <span className="ms-2 badge bg-light text-dark">
-                  matching "{searchTerm}"
-                </span>
+                // <span className="ms-2 badge bg-light text-dark">
+                //   matching "{searchTerm}"
+                // </span>
+                <p className="text-muted mb-0" style={{ fontSize: '0.95rem' }}>
+          <span className="badge bg-light text-dark">
+            matching "{searchTerm}"
+          </span>
+        </p>
               )}
             </p>
           </div>
