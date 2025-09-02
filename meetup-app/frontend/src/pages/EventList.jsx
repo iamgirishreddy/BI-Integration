@@ -64,7 +64,7 @@ function EventList() {
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
-          <p className="mt-3 text-muted">Loading amazing events...</p>
+          <p className="mt-3 text-muted">Loading...</p>
         </div>
       </div>
     )
@@ -90,9 +90,9 @@ function EventList() {
             <h2 className="fw-bold mb-2" style={{ fontSize: '2.5rem', color: '#333' }}>
               Meetup Events
             </h2>
-            <p className="text-muted mb-0" style={{ fontSize: '1.1rem' }}>
+            {/* <p className="text-muted mb-0" style={{ fontSize: '1.1rem' }}>
               Discover amazing events happening around you
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="col-12 col-lg-4">
@@ -141,65 +141,71 @@ function EventList() {
       </div>
 
       {/* Events Count - Left Aligned */}
-      <div className="row mb-4">
-        <div className="col-12">
-          <div className="text-start">
-            <p className="text-muted mb-0" style={{ fontSize: '0.95rem' }}>
-              <strong>{filteredEvents.length}</strong> event{filteredEvents.length !== 1 ? 's' : ''} found
-              {typeFilter !== 'both' && (
-                <span className="ms-2 badge bg-light text-dark">
-                  {typeFilter} events
-                </span>
-              )}
-              {searchTerm && (
-                // <span className="ms-2 badge bg-light text-dark">
-                //   matching "{searchTerm}"
-                // </span>
-                <p className="text-muted mb-0" style={{ fontSize: '0.95rem' }}>
-          <span className="badge bg-light text-dark">
+   <div className="row mb-4">
+  <div className="col-12">
+    <div className="text-start">
+      <p 
+        className="text-muted mb-0 d-flex align-items-center flex-wrap" 
+        style={{ fontSize: '0.95rem', gap: '12px' }}
+      >
+        <strong>{filteredEvents.length}</strong> event{filteredEvents.length !== 1 ? 's' : ''}
+        
+        {typeFilter !== 'both' && (
+          <span className="ms-2 badge bg-light text-dark">
+            {typeFilter} events
+          </span>
+        )}
+
+        {searchTerm && (
+          <span 
+            className="ms-2 badge bg-light text-dark text-truncate" 
+            style={{ maxWidth: '200px' }}
+          >
             matching "{searchTerm}"
           </span>
-        </p>
-              )}
-            </p>
-          </div>
-        </div>
-      </div>
+        )}
+      </p>
+    </div>
+  </div>
+</div>
 
-      {/* Events Grid - Uniform and Responsive */}
-      <div className="row g-4">
-        {filteredEvents.map(event => (
-          <EventCard key={event._id} event={event} />
-        ))}
-      </div>
+
+
+    {/* Events Grid - Uniform and Responsive */}
+<div
+  className="row g-4"
+  style={{ minHeight: '250px', transition: 'min-height 0.3s' }}
+>
+  {filteredEvents.map(event => (
+    <EventCard key={event._id} event={event} />
+  ))}
+</div>
+
 
       {/* No Events Message */}
       {filteredEvents.length === 0 && !loading && (
-        <div className="row">
-          <div className="col-12">
-            <div className="text-center py-5">
-              <div className="mb-3">
-                <i className="bi bi-calendar-x" style={{ fontSize: '3rem', color: '#6c757d' }}></i>
-              </div>
-              <h5 className="text-muted">No events found</h5>
-              <p className="text-muted mb-3">
-                {searchTerm ? 
-                  `No events match your search "${searchTerm}"` : 
-                  'Try adjusting your filter criteria'
-                }
-              </p>
-              {searchTerm && (
-                <button 
-                  className="btn btn-outline-primary"
-                  onClick={() => setSearchTerm('')}
-                >
-                  Clear Search
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="text-center py-5" style={{ minHeight: '250px' }}>
+    <div className="mb-3">
+      <i className="bi bi-calendar-x" style={{ fontSize: '3rem', color: '#6c757d' }}></i>
+    </div>
+    <h5 className="text-muted">No events found</h5>
+    <p className="text-muted mb-3">
+      {searchTerm ? 
+        `No events match your search "${searchTerm}"` : 
+        'Try adjusting your filter criteria'
+      }
+    </p>
+    {searchTerm && (
+      <button 
+        className="btn btn-outline-primary"
+        onClick={() => setSearchTerm('')}
+      >
+        Clear Search
+      </button>
+    )}
+  </div>
+)}
+
     </div>
   )
 }
