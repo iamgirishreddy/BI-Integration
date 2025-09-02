@@ -195,54 +195,32 @@ function EventDetails() {
         <div className="col-lg-4">
           {/* Date, Location, Price Box - Left Aligned Content */}
           <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '12px' }}>
-  <div className="card-body ps-0 pe-4 pt-4 pb-4">
+  <div className="card-body ps-0 pe-4 pt-4 pb-4 text-start">
     
     {/* Date and Time */}
     <div className="mb-4">
-      <div className="d-flex align-items-start">
-        <i className="bi bi-calendar-event me-3 mt-1 text-primary" style={{ fontSize: '18px' }}></i>
-        {/* <div> */}
-          <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
-          📅 : {startTime} to {endTime}
-          </div>
-          {/* <div className="text-muted small">to</div>
-          <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
-            {endTime}
-          </div> */}
-        {/* </div> */}
+      <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
+        📅 : {startTime} to {endTime}
       </div>
     </div>
 
     {/* Venue */}
     <div className="mb-4">
-      <div className="d-flex align-items-start">
-        <i className="bi bi-geo-alt me-3 mt-1 text-success" style={{ fontSize: '18px' }}></i>
-        <div>
-          <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
-            📍: {event.venue || (event.type === 'online' ? 'Online Event' : 'Venue TBD')}
-          </div>
-          {/* {event.venue && event.type === 'offline' && (
-            <div className="text-muted small">In-person event</div>
-          )} */}
-        </div>
+      <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
+        📍 : {event.venue || (event.type === 'online' ? 'Online Event' : 'Venue TBD')}
       </div>
     </div>
 
     {/* Price */}
     <div>
-      <div className="d-flex align-items-start">
-        <i className="bi bi-currency-rupee me-3 mt-1 text-warning" style={{ fontSize: '18px' }}></i>
-        <div>
-          <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
-            💰: {event.price === 0 ? 'Free' : `₹${event.price.toLocaleString()}`}
-          </div>
-          {/* <div className="text-muted small">Registration fee</div> */}
-        </div>
+      <div className="fw-semibold" style={{ fontSize: '15px', color: '#333' }}>
+        💰 : {event.price === 0 ? 'Free' : `₹${event.price.toLocaleString()}`}
       </div>
     </div>
 
   </div>
 </div>
+
 
           
           {/* Speakers Section */}
